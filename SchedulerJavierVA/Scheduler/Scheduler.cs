@@ -12,20 +12,38 @@ namespace SchedulerJavierVA.Scheduler
         public SchedulerExecution GetNextExecution(SchedulerConfig config)
         {
             SchedulerExecution execution = new SchedulerExecution();
-
-            if (config.Type == ScheduleType.Once)
+            if (config.NextDate != null)
             {
-                execution.NextExecution = config.CurrentDate;
+                execution.NextExecution = (DateTime)config.NextDate;
+            }
+            else
+            {
+                if (config.CurrentDate >= config.StartDate)
+                {
+                    execution.NextExecution = config.CurrentDate;
+                }
+                else
+                {
+                    execution.NextExecution = config.StartDate;
+                }
+            }
+
+            execution.Description = $"Occurs {config.Type}. Schedule will be used on {execution.NextExecution} starting on {config.StartDate}";
+
+            return execution;
+            /*if (config.Type == ScheduleType.Once)
+            {
                 execution.Description = "";
                 return execution;
             }
 
             if (config.Type == ScheduleType.Recurring)
             {
-
+                execution.Description = "";
                 return execution;
-            }
-            throw new InvalidOperationException();
+            }*/
+
+            //throw new InvalidOperationException();
         }
     }
 }

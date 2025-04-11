@@ -1,11 +1,6 @@
 ﻿using SchedulerJavierVA.Interfaces;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace SchedulerJavierVA
+namespace SchedulerJavierVA.Services
 {
     public class DateValidationService
     {
@@ -16,7 +11,7 @@ namespace SchedulerJavierVA
             _validators = validators.ToList();
         }
 
-        public bool Validate(DateTime currentDate, DateTime nextDate, DateTime startDate, DateTime endDate, out List<string> errors)
+        public bool Validate(DateTime currentDate, DateTime? nextDate, DateTime startDate, DateTime? endDate, out List<string> errors)
         {
             errors = new List<string>();
 

@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.Serialization;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Runtime.Serialization;
 
 namespace SchedulerJavierVA.Scheduler
 {
@@ -12,8 +7,9 @@ namespace SchedulerJavierVA.Scheduler
         public ScheduleType Type { get; set; }
         public DateTime CurrentDate { get; set; }
         public DateTime? NextDate { get; set; }
+        public int? Daily { get; set; }
         public int? Every { get; set; }
-        public DateTime? StartDate { get; set; }
+        public DateTime StartDate { get; set; }
         public DateTime? EndDate { get; set; }
     }
 
@@ -22,6 +18,6 @@ namespace SchedulerJavierVA.Scheduler
         [EnumMember(Value = "O")]
         Once,
         [EnumMember(Value = "R")]
-        Recurring     
+        Recurring
     }
 }

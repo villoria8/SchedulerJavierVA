@@ -1,80 +1,30 @@
 ﻿using SchedulerJavierVA;
+using SchedulerJavierVA.Validators;
+using SchedulerJavierVA.Interfaces;
 using SchedulerJavierVA.Scheduler;
-using System.Globalization;
-using System.Runtime.CompilerServices;
-using System.Xml.Linq;
+using SchedulerJavierVA.Services;
 
 class Program
 {
-    static void Main(string[] args)
+    static void Main()
     {
-        var typeTask = GetType();
-        Console.WriteLine(typeTask);
-
-        var currentDate = DateHelper.GetDateFromUser("Introduce current date (dd/MM/yyyy HH:mm):");
-        Console.WriteLine(currentDate);
-
-        var nextDate = DateHelper.GetDateFromUser("Introduce next date (dd/MM/yyyy HH:mm) to run:");
-        Console.WriteLine(nextDate);
-
-        var startDate = DateHelper.GetDateFromUser("Introduce start date (dd/MM/yyyy HH:mm):");
-        Console.WriteLine(startDate);
-
-        var endDate = DateHelper.GetDateFromUser("Introduce end date (dd/MM/yyyy HH:mm):");
-        Console.WriteLine(endDate);
-
-        DateHelper.ValidDates(currentDate, nextDate, startDate, endDate);
-
-        SchedulerConfig configSchedule = ConfigSchedule(currentDate, typeTask, nextDate, startDate, endDate);
-
-        Scheduler schedule = new Scheduler();
-        SchedulerExecution execution = schedule.GetNextExecution(configSchedule);
-
-        Console.WriteLine($"{execution.Description} {execution.NextExecution}");
-    }
-    
-    public static ScheduleType GetType()
-    {
-        var validType = false;
-
-        //valor por defecto
-        ScheduleType typeConfig = ScheduleType.Once;
-
-        do
+        var validators = new List<IDateValidator>
         {
-            Console.WriteLine("Introduce task type (O = Once / R = Recurring)");
-            var typeTask = Console.ReadLine();
-            if (typeTask != null)
-            {
-                if (typeTask.Trim().ToUpper() == ScheduleType.Once.GetEnumMemberValue())
-                {
-                    validType = true;
-                    typeConfig = ScheduleType.Once;
-                }
-                else if (typeTask.Trim().ToUpper() == ScheduleType.Recurring.GetEnumMemberValue())
-                {
-                    validType = true;
-                    typeConfig = ScheduleType.Recurring;
-                }
-                else
-                {
-                    Console.WriteLine($"Type {typeTask} does not exist. Introduce (O = Once / R = Recurring)");
-                }
-            }
-        }
-        while (validType == false);
+            new NextDateAfterCurrentDateValidator(),
+            new NextDateInRangeValidator()
+        };
 
-        return typeConfig;
-    }
+        var validationService = new DateValidationService(validators);
+        var inputService = new UserInputService();
+        var scheduleBuilder = new ScheduleBuilderService(validationService, inputService);
 
-    private static SchedulerConfig ConfigSchedule(DateTime currentDate, ScheduleType typeTask, DateTime nextDate, DateTime startDate, DateTime endDate)
-    {
-        SchedulerConfig config = new SchedulerConfig();
-        config.CurrentDate = currentDate;
-        config.Type = typeTask;
-        config.NextDate = nextDate;
-        config.StartDate = startDate;
-        config.EndDate = endDate;
-        return config;
+        SchedulerConfig config = scheduleBuilder.GetValidatedScheduleConfig();
+
+        Scheduler scheduler = new Scheduler();
+        SchedulerExecution execution = scheduler.GetNextExecution(config);
+
+        Console.WriteLine($"Next execution time: {execution.NextExecution}");
+        Console.WriteLine($"Description: {execution.Description}");
+
     }
 }
