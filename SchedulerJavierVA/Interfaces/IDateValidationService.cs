@@ -1,6 +1,6 @@
 ﻿namespace SchedulerJavierVA.Interfaces
 {
-    public interface IDateValidator
+    public interface IDateValidationService
     {
         bool IsValid(DateTime currentDate, DateTime? nextDate, DateTime startDate, DateTime? endDate);
         string ErrorMessage { get; }

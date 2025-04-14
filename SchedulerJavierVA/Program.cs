@@ -8,7 +8,7 @@ class Program
 {
     static void Main()
     {
-        var validators = new List<IDateValidator>
+        var validators = new List<IDateValidationService>
         {
             new NextDateAfterCurrentDateValidator(),
             new NextDateInRangeValidator()

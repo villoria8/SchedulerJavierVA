@@ -2,7 +2,7 @@
 
 namespace SchedulerJavierVA.Validators
 {
-    public class NextDateInRangeValidator : IDateValidator
+    public class NextDateInRangeValidator : IDateValidationService
     {
         public string ErrorMessage => "Date must be between start and end dates.";
 

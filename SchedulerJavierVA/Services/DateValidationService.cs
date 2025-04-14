@@ -2,16 +2,16 @@
 
 namespace SchedulerJavierVA.Services
 {
-    public class DateValidationService
+    public class DateValidationService : IDateErrorsValidationService
     {
-        private readonly List<IDateValidator> _validators;
+        private readonly List<IDateValidationService> _validators;
 
-        public DateValidationService(IEnumerable<IDateValidator> validators)
+        public DateValidationService(IEnumerable<IDateValidationService> validators)
         {
             _validators = validators.ToList();
         }
 
-        public bool Validate(DateTime currentDate, DateTime? nextDate, DateTime startDate, DateTime? endDate, out List<string> errors)
+        public bool IsValid(DateTime currentDate, DateTime? nextDate, DateTime startDate, DateTime? endDate, out List<string> errors)
         {
             errors = new List<string>();
 

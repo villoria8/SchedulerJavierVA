@@ -11,39 +11,34 @@ namespace SchedulerJavierVA.Scheduler
     {
         public SchedulerExecution GetNextExecution(SchedulerConfig config)
         {
-            SchedulerExecution execution = new SchedulerExecution();
-            if (config.NextDate != null)
+            var execution = new SchedulerExecution
             {
-                execution.NextExecution = (DateTime)config.NextDate;
-            }
-            else
-            {
-                if (config.CurrentDate >= config.StartDate)
-                {
-                    execution.NextExecution = config.CurrentDate;
-                }
-                else
-                {
-                    execution.NextExecution = config.StartDate;
-                }
-            }
+                NextExecution = config.NextDate ??
+                        (config.CurrentDate >= config.StartDate ? config.CurrentDate : config.StartDate)
+            };
 
-            execution.Description = $"Occurs {config.Type}. Schedule will be used on {execution.NextExecution} starting on {config.StartDate}";
+            execution.Description = BuildDescription(config, execution.NextExecution);
 
             return execution;
-            /*if (config.Type == ScheduleType.Once)
+        }
+
+        private string BuildDescription(SchedulerConfig config, DateTime nextExecution)
+        {
+            if (config.Type == ScheduleType.Once)
             {
-                execution.Description = "";
-                return execution;
+                return $"Occurs once. Schedule will be used on {nextExecution} starting on {config.StartDate.ToShortDateString()}";
             }
 
-            if (config.Type == ScheduleType.Recurring)
+            string frequencyDescription = config.Occurs switch
             {
-                execution.Description = "";
-                return execution;
-            }*/
+                OccursType.Daily => "every day",
+                OccursType.Weekly => "weekly",
+                OccursType.Monthly => "monthly",
+                _ => "with unknown frequency"
+            };
 
-            //throw new InvalidOperationException();
+            return $"Occurs {frequencyDescription}. Schedule will be used on {nextExecution} starting on {config.StartDate.ToShortDateString()}";
+
         }
     }
 }

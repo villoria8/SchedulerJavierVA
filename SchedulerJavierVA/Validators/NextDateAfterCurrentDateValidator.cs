@@ -2,7 +2,7 @@
 
 namespace SchedulerJavierVA.Validators
 {
-    public class NextDateAfterCurrentDateValidator : IDateValidator
+    public class NextDateAfterCurrentDateValidator : IDateValidationService
     {
         public string ErrorMessage => "Next date must be greater than current date.";
 

@@ -7,7 +7,7 @@ namespace SchedulerJavierVA.Scheduler
         public ScheduleType Type { get; set; }
         public DateTime CurrentDate { get; set; }
         public DateTime? NextDate { get; set; }
-        public int? Daily { get; set; }
+        public OccursType Occurs { get; set; }
         public int? Every { get; set; }
         public DateTime StartDate { get; set; }
         public DateTime? EndDate { get; set; }
@@ -19,5 +19,15 @@ namespace SchedulerJavierVA.Scheduler
         Once,
         [EnumMember(Value = "R")]
         Recurring
+    }
+
+    public enum OccursType
+    {
+        [EnumMember(Value = "D")]
+        Daily,
+        [EnumMember(Value = "W")]
+        Weekly,
+        [EnumMember(Value = "M")]
+        Monthly
     }
 }

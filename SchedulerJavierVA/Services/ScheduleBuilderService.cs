@@ -1,4 +1,5 @@
-﻿using SchedulerJavierVA.Scheduler;
+﻿using SchedulerJavierVA.Interfaces;
+using SchedulerJavierVA.Scheduler;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,10 +10,10 @@ namespace SchedulerJavierVA.Services
 {
     public class ScheduleBuilderService
     {
-        private readonly DateValidationService validationService;
-        private readonly UserInputService inputService;
+        private readonly IDateErrorsValidationService validationService;
+        private readonly IUserInputService inputService;
 
-        public ScheduleBuilderService(DateValidationService validationService, UserInputService inputService)
+        public ScheduleBuilderService(IDateErrorsValidationService validationService, IUserInputService inputService)
         {
             this.validationService = validationService;
             this.inputService = inputService;
@@ -24,7 +25,7 @@ namespace SchedulerJavierVA.Services
             {
                 var (currentDate, type, nextDate, startDate, endDate) = inputService.GetUserInput();
 
-                bool isValid = validationService.Validate(currentDate, nextDate, startDate, endDate, out var errors);
+                bool isValid = validationService.IsValid(currentDate, nextDate, startDate, endDate, out var errors);
 
                 if (isValid)
                 {

@@ -1,4 +1,5 @@
-﻿using SchedulerJavierVA.Scheduler;
+﻿using SchedulerJavierVA.Interfaces;
+using SchedulerJavierVA.Scheduler;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace SchedulerJavierVA.Services
 {
-    public class UserInputService
+    public class UserInputService : IUserInputService
     {
         public (DateTime currentDate, ScheduleType scheduleType, DateTime? nextDate, DateTime startDate, DateTime? endDate)
         GetUserInput()
